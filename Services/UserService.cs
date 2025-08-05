@@ -17,16 +17,21 @@ namespace Technology_Shop.Services
 		public Task<User?> GetUserByIdAsync(int id)
 			=> _repo.GetByIdAsync(id);
 
-		public Task<bool> UpdateUserAsync(UserUpdateDto dto)
+		public async Task<bool> UpdateUserAsync(UserUpdateDto dto)
 		{
-			var user = new User
-			{
-				Id = dto.Id,
-				FirstName = dto.FirstName,
-				LastName = dto.LastName
-			};
-			return _repo.UpdateAsync(user);
+			var user = await _repo.GetByIdAsync(dto.Id);
+			if (user == null) return false;
+
+			if (string.IsNullOrWhiteSpace(dto.FirstName) || string.IsNullOrWhiteSpace(dto.LastName))
+				return false;
+
+			user.FirstName = dto.FirstName?.Trim();
+			user.LastName = dto.LastName?.Trim();
+
+			return await _repo.UpdateAsync(user);
 		}
+
+
 		public Task<bool> DeleteUserAsync(int id)
 		{
 			return _repo.DeleteAsync(id);

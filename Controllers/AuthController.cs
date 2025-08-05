@@ -24,14 +24,24 @@ public class AuthController : ControllerBase
 	[HttpPost("register")]
 	public async Task<IActionResult> Register(RegisterRequest dto)
 	{
+		if (!ModelState.IsValid)
+		{
+			return BadRequest(ModelState);
+		}
+		if (!PasswordValidator.IsStrong(dto.Password))
+		{
+			return BadRequest("Password must be at least 6 characters long," +
+				" contain an uppercase letter, a digit, and a special character.");
+			//Password123!@
+		}
 		if (await _db.Users.AnyAsync(u => u.Email == dto.Email))
 			return Conflict("Email already in use.");
 
 		var user = new User
 		{
-			FirstName = dto.FirstName,
-			LastName = dto.LastName,
-			Email = dto.Email,
+			FirstName = dto.FirstName.Trim(),
+			LastName = dto.LastName.Trim(),
+			Email = dto.Email.Trim().ToLower(),
 			PasswordHash = _hasher.Hash(dto.Password)
 		};
 

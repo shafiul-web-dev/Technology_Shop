@@ -24,21 +24,25 @@ namespace Technology_Shop.Controllers
 			return Ok(users);
 		}
 		[HttpGet("{id}")]
+		[Authorize(Roles = "Admin")]
 		public async Task<IActionResult> GetById(int id)
 		{
 			var user = await _service.GetUserByIdAsync(id);
-			if(user == null) return NotFound($"User with id {id} not found.");
+			if (user == null) return NotFound($"User with id {id} not found.");
 			return Ok(user);
 		}
 		[HttpPut("{id}")]
+		[Authorize(Roles = "Admin")]
 		public async Task<IActionResult> Update(int id, [FromBody] UserUpdateDto dto)
 		{
-			if( id != dto.Id ) return BadRequest("User ID mismatch.");
+			if (id != dto.Id) return BadRequest("User ID mismatch.");
 
 			var userUpdated = await _service.UpdateUserAsync(dto);
-			return Ok(userUpdated);
+			if (!userUpdated) return NotFound("User not found or Update failed!");
+			return Ok("User Update Successfully");
 		}
 		[HttpDelete("{id}")]
+		[Authorize(Roles = "Admin")]
 		public async Task<IActionResult> Delete(int id)
 		{
 			var userDeleted = await _service.DeleteUserAsync(id);
