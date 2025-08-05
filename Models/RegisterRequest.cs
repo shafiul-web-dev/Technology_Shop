@@ -1,4 +1,4 @@
-﻿using Swashbuckle.AspNetCore.Annotations;
+﻿
 using System.ComponentModel.DataAnnotations;
 
 namespace Technology_Shop.Models
@@ -14,7 +14,6 @@ namespace Technology_Shop.Models
 		public string LastName { get; set; } = string.Empty;
 
 		[Required, EmailAddress, StringLength(255)]
-		[SwaggerSchema(Description = "Enter your email address")]
 
 		[Display(Name = "Email Address")]
 		public string Email { get; set; } = string.Empty;

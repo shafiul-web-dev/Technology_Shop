@@ -9,5 +9,7 @@ namespace Technology_Shop.Services
 		Task<User?> GetUserByIdAsync(int id);
 		Task<bool> UpdateUserAsync(UserUpdateDto dto);
 		Task<bool> DeleteUserAsync(int id);
+		Task<User?> GetUserProfileAsync(int userId);
+
 	}
 }

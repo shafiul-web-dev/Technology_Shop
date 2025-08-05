@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using Technology_Shop.DTO.User;
 using Technology_Shop.Models;
 using Technology_Shop.Services;
@@ -49,5 +50,21 @@ namespace Technology_Shop.Controllers
 			if (!userDeleted) return NotFound($"User with id {id} not found.");
 			return Ok($"User with id {id} deleted successfully.");
 		}
+		[HttpGet("me")]
+		[Authorize]
+		public async Task<IActionResult> GetMyProfile()
+		{
+			var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+			if (string.IsNullOrEmpty(userIdStr) || !int.TryParse(userIdStr, out int userId))
+				return Unauthorized("Invalid or missing user ID in token.");
+
+			var userInfo = await _service.GetUserProfileAsync(userId);
+			if (userInfo == null)
+				return NotFound("User not found.");
+
+			return Ok(userInfo);
+		}
+
+
 	}
 }

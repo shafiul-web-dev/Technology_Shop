@@ -16,13 +16,15 @@ namespace Technology_Shop.Models
 			_settings = opts.Value;
 		}
 
-		public AuthResponse GenerateToken(string email, string role)
+		public AuthResponse GenerateToken(int userId, string email, string role)
 		{
 			var claims = new[]
 			{
-			new Claim(JwtRegisteredClaimNames.Sub, email),
-			new Claim(ClaimTypes.Role, role)
-		};
+				new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+                new Claim(JwtRegisteredClaimNames.Sub, email),
+				new Claim(ClaimTypes.Role, role)
+			};
+
 
 			var key = new SymmetricSecurityKey(
 				Encoding.UTF8.GetBytes(_settings.Key));

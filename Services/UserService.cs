@@ -30,11 +30,13 @@ namespace Technology_Shop.Services
 
 			return await _repo.UpdateAsync(user);
 		}
-
-
 		public Task<bool> DeleteUserAsync(int id)
 		{
 			return _repo.DeleteAsync(id);
+		}
+		public async Task<User?> GetUserProfileAsync(int userId)
+		{
+			return await _repo.GetByIdAsync(userId);
 		}
 	}
 }

@@ -61,7 +61,7 @@ public class AuthController : ControllerBase
 		if (admin != null && _hasher.Verify(
 			admin.PasswordHash, dto.Password))
 		{
-			return Ok(_jwt.GenerateToken(admin.Email, "Admin"));
+			return Ok(_jwt.GenerateToken(admin.Id, admin.Email, "Admin"));
 		}
 
 		// Then Users
@@ -74,6 +74,6 @@ public class AuthController : ControllerBase
 			return Unauthorized("Invalid credentials.");
 		}
 
-		return Ok(_jwt.GenerateToken(user.Email, "User"));
+		return Ok(_jwt.GenerateToken(user.Id, user.Email, "User"));
 	}
 }

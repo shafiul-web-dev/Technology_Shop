@@ -8,6 +8,8 @@ namespace Technology_Shop.Repositories
 		Task<User?> GetByIdAsync(int id);
 		Task<bool> UpdateAsync(User user);
 		Task<bool> DeleteAsync(int id);
+		Task<User?> GettByIdAsync(int id);
+
 
 	}
 }

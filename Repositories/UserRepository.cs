@@ -33,6 +33,11 @@ namespace Technology_Shop.Repositories
 			_db.Users.Remove(user);
 			return await _db.SaveChangesAsync() > 0;
 		}
+		public async Task<User?> GettByIdAsync(int id)
+		{
+			return await _db.Users.FindAsync(id);
+		}
 
-	}	
+
+	}
 }
