@@ -7,10 +7,7 @@ namespace Technology_Shop.DTO
 		[Required]
 		public string FirstName { get; set; }
 		[Required]
-		public string lastName { get; set; }
-
-		[EmailAddress,Required]
-		public string Email { get; set; }
+		public string LastName { get; set; }
 
 	}
 }

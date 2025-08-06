@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Technology_Shop.DTO;
 using Technology_Shop.DTO.User;
 using Technology_Shop.Models;
 using Technology_Shop.Services;
@@ -32,7 +33,7 @@ namespace Technology_Shop.Controllers
 			if (user == null) return NotFound($"User with id {id} not found.");
 			return Ok(user);
 		}
-		[HttpPut("{id}")]
+		[HttpPut("admin/{id}")]
 		[Authorize(Roles = "Admin")]
 		public async Task<IActionResult> Update(int id, [FromBody] UserUpdateDto dto)
 		{
@@ -63,6 +64,20 @@ namespace Technology_Shop.Controllers
 				return NotFound("User not found.");
 
 			return Ok(userInfo);
+		}
+		[Authorize(Policy = "CanUpdateOwnProfile")]
+		[HttpPut("me")]
+		public async Task<IActionResult> UpdateeOwnProfile([FromBody] UserOwnUpdateDto dto)
+		{
+			var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+			if (!int.TryParse(userIdStr, out int userId))
+				return Unauthorized("Invalid token.");
+
+			var success = await _service.UpdateOwnProfileAsync(userId, dto);
+			if (!success)
+				return NotFound("User not found or update failed.");
+
+			return Ok("Profile updated successfully.");
 		}
 
 

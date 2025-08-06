@@ -9,6 +9,7 @@ namespace Technology_Shop.Repositories
 		Task<bool> UpdateAsync(User user);
 		Task<bool> DeleteAsync(int id);
 		Task<User?> GettByIdAsync(int id);
+		Task<bool> UpdateProfileAsync(User user);
 
 
 	}

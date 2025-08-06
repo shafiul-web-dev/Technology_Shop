@@ -1,4 +1,5 @@
-﻿using Technology_Shop.DTO.User;
+﻿using Technology_Shop.DTO;
+using Technology_Shop.DTO.User;
 using Technology_Shop.Models;
 using Technology_Shop.Repositories;
 
@@ -38,5 +39,19 @@ namespace Technology_Shop.Services
 		{
 			return await _repo.GetByIdAsync(userId);
 		}
+
+		public async Task<bool> UpdateOwnProfileAsync(int userId, UserOwnUpdateDto dto)
+		{
+			var user = await _repo.GetByIdAsync(userId);
+			if (user == null)
+				return false;
+
+			user.FirstName = dto.FirstName;
+			user.LastName = dto.LastName;
+
+			return await _repo.UpdateProfileAsync(user);
+		}
+
+
 	}
 }

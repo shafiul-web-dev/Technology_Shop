@@ -37,6 +37,12 @@ namespace Technology_Shop.Repositories
 		{
 			return await _db.Users.FindAsync(id);
 		}
+		public async Task<bool> UpdateProfileAsync(User user)
+		{
+			_db.Users.Update(user);
+			return await _db.SaveChangesAsync() > 0;
+		}
+		
 
 
 	}

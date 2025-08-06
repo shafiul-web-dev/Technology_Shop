@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -32,6 +33,7 @@ namespace Technology_Shop
 			// Services
 			builder.Services.AddSingleton<IPasswordHasher, BcryptPasswordHasher>();
 			builder.Services.AddScoped<JwtService>();
+			builder.Services.AddSingleton<IAuthorizationHandler, SameUserHandler>();
 
 			// Authentication & Authorization
 			builder.Services.AddAuthentication(options =>
@@ -63,6 +65,8 @@ namespace Technology_Shop
 
 			builder.Services.AddAuthorization(options =>
 			{
+				options.AddPolicy("CanUpdateOwnProfile", policy =>
+					 policy.Requirements.Add(new SameUserRequirement()));
 				options.AddPolicy("AdminOnly",
 					policy => policy.RequireRole("Admin"));
 			});
