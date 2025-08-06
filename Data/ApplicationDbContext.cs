@@ -19,7 +19,7 @@ namespace Technology_Shop.Data
 
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
-			// 🧍 User
+			// User
 			builder.Entity<User>()
 				.HasIndex(u => u.Email)
 				.IsUnique();
@@ -30,12 +30,12 @@ namespace Technology_Shop.Data
 				.HasForeignKey(o => o.UserId)
 				.OnDelete(DeleteBehavior.Cascade);
 
-			// 🛡️ Admin
+			// Admin
 			builder.Entity<Admin>()
 				.HasIndex(a => a.Email)
 				.IsUnique();
 
-			// 📦 Category
+			// Category
 			builder.Entity<Category>()
 				.HasIndex(c => c.Name)
 				.IsUnique();
@@ -46,14 +46,14 @@ namespace Technology_Shop.Data
 				.HasForeignKey(p => p.CategoryID)
 				.OnDelete(DeleteBehavior.Restrict);
 
-			// 🛒 Product
+			// Product
 			builder.Entity<Product>()
 				.HasMany(p => p.OrderItems)
 				.WithOne(oi => oi.Product)
 				.HasForeignKey(oi => oi.ProductID)
 				.OnDelete(DeleteBehavior.Cascade);
 
-			// 📄 Order
+			//  Order
 			builder.Entity<Order>()
 				.HasMany(o => o.OrderItems)
 				.WithOne(oi => oi.Order)
@@ -66,11 +66,11 @@ namespace Technology_Shop.Data
 				.HasForeignKey<Payment>(p => p.OrderID)
 				.OnDelete(DeleteBehavior.Cascade);
 
-			// 🧾 OrderItem
+			// OrderItem
 			builder.Entity<OrderItem>()
-				.HasKey(oi => oi.ID); // You could use composite key (OrderID, ProductID) if needed
+				.HasKey(oi => oi.ID);
 
-			// 💳 Payment
+			// Payment
 			builder.Entity<Payment>()
 				.Property(p => p.PaymentMethod)
 				.IsRequired()
