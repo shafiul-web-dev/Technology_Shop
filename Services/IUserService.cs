@@ -12,5 +12,6 @@ namespace Technology_Shop.Services
 		Task<bool> DeleteUserAsync(int id);
 		Task<User?> GetUserProfileAsync(int userId);
 		Task<bool> UpdateOwnProfileAsync( int userId, UserOwnUpdateDto userOwnUpdateDto);
+		Task<bool> ChangePasswordAsync(int userId, ChangePasswordDto changePasswordDto);
 	}
 }

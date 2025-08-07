@@ -52,6 +52,25 @@ namespace Technology_Shop.Services
 			return await _repo.UpdateProfileAsync(user);
 		}
 
+		public async Task<bool> ChangePasswordAsync(int userId, ChangePasswordDto dto)
+		{
+			var user = await _repo.GetByIdAsync(userId);
+			if (user == null)
+				return false;
+
+			// Validate current password
+			if (string.IsNullOrWhiteSpace(dto.CurrentPassword) ||
+				!BCrypt.Net.BCrypt.Verify(dto.CurrentPassword, user.PasswordHash))
+				return false;
+
+			// Validate new password
+			if (string.IsNullOrWhiteSpace(dto.NewPassword) || dto.NewPassword.Length < 6)
+				return false;
+
+			// Hash and update
+			user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.NewPassword);
+			return await _repo.UpdateAsync(user);
+		}
 
 	}
 }

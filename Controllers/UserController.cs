@@ -79,6 +79,20 @@ namespace Technology_Shop.Controllers
 
 			return Ok("Profile updated successfully.");
 		}
+		[Authorize]
+		[HttpPut("me/change-password")]
+		public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto dto)
+		{
+			var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+			if (!int.TryParse(userIdStr, out int userId))
+				return Unauthorized("Invalid token.");
+
+			var success = await _service.ChangePasswordAsync(userId, dto);
+			if (!success)
+				return BadRequest("Current password is incorrect or update failed.");
+
+			return Ok("Password changed successfully.");
+		}
 
 
 	}

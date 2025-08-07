@@ -59,7 +59,7 @@ public class AuthController : ControllerBase
 			.SingleOrDefaultAsync(a => a.Email == dto.Email);
 
 		if (admin != null && _hasher.Verify(
-			admin.PasswordHash, dto.Password))
+			dto.Password, admin.PasswordHash))
 		{
 			return Ok(_jwt.GenerateToken(admin.Id, admin.Email, "Admin"));
 		}
@@ -69,7 +69,7 @@ public class AuthController : ControllerBase
 			.SingleOrDefaultAsync(u => u.Email == dto.Email);
 
 		if (user == null || !_hasher.Verify(
-			user.PasswordHash, dto.Password))
+			dto.Password,user.PasswordHash))
 		{
 			return Unauthorized("Invalid credentials.");
 		}
