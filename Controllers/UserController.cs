@@ -20,10 +20,12 @@ namespace Technology_Shop.Controllers
 		}
 		[HttpGet]
 		[Authorize(Roles = "Admin")]
-		public async Task<IActionResult> GetAll()
+		public async Task<IActionResult> GetAll(
+			[FromQuery] int pageNumber =1,
+			[FromQuery] int pageSize = 5)
 		{
-			var users = await _service.GetAllUsersAsync();
-			return Ok(users);
+			var pagedUsers = await _service.GetPagedResultAsync(pageNumber,pageSize);
+			return Ok(pagedUsers);
 		}
 		[HttpGet("{id}")]
 		[Authorize(Roles = "Admin")]
@@ -79,7 +81,7 @@ namespace Technology_Shop.Controllers
 
 			return Ok("Profile updated successfully.");
 		}
-		[Authorize]
+		[Authorize(Policy = "CanChangeOwnPassword")]
 		[HttpPut("me/change-password")]
 		public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto dto)
 		{
@@ -93,7 +95,5 @@ namespace Technology_Shop.Controllers
 
 			return Ok("Password changed successfully.");
 		}
-
-
 	}
 }

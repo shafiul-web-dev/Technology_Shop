@@ -42,8 +42,23 @@ namespace Technology_Shop.Repositories
 			_db.Users.Update(user);
 			return await _db.SaveChangesAsync() > 0;
 		}
-		
 
+		public async Task<PagedResult<User>> GetPagedUserAsync(int pageNumber, int pageSize)
+		{
+			var query = _db.Users.AsNoTracking();
+			var totalRecords = await query.CountAsync();
+			var items = await query
+				.Skip((pageNumber-1) * pageSize)
+				.Take(pageSize)
+				.ToListAsync();
 
+			return new PagedResult<User>
+			{
+				TotalRecords = totalRecords,
+				PageSize = pageSize,
+				PageNumbers = pageNumber,
+				Items = items
+			};
+		}
 	}
 }

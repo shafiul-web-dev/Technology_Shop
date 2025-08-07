@@ -6,6 +6,7 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using Technology_Shop.Configurations;
 using Technology_Shop.Data;
+using Technology_Shop.Interfaces.EmailInterface;
 using Technology_Shop.Models;
 using Technology_Shop.Repositories;
 using Technology_Shop.Services;
@@ -34,6 +35,7 @@ namespace Technology_Shop
 			builder.Services.AddSingleton<IPasswordHasher, BcryptPasswordHasher>();
 			builder.Services.AddScoped<JwtService>();
 			builder.Services.AddSingleton<IAuthorizationHandler, SameUserHandler>();
+			builder.Services.AddSingleton<IEmailService, ConsoleEmailService>();
 
 			// Authentication & Authorization
 			builder.Services.AddAuthentication(options =>
@@ -67,6 +69,8 @@ namespace Technology_Shop
 			{
 				options.AddPolicy("CanUpdateOwnProfile", policy =>
 					 policy.Requirements.Add(new SameUserRequirement()));
+				options.AddPolicy("CanChangeOwnPassword", policy =>
+	                 policy.Requirements.Add(new SameUserRequirement()));
 				options.AddPolicy("AdminOnly",
 					policy => policy.RequireRole("Admin"));
 			});

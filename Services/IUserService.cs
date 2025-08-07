@@ -13,5 +13,7 @@ namespace Technology_Shop.Services
 		Task<User?> GetUserProfileAsync(int userId);
 		Task<bool> UpdateOwnProfileAsync( int userId, UserOwnUpdateDto userOwnUpdateDto);
 		Task<bool> ChangePasswordAsync(int userId, ChangePasswordDto changePasswordDto);
+
+		Task<PagedResult<User>> GetPagedResultAsync(int pageNumber, int pageSize);
 	}
 }

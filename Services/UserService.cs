@@ -72,5 +72,10 @@ namespace Technology_Shop.Services
 			return await _repo.UpdateAsync(user);
 		}
 
+		public Task<PagedResult<User>> GetPagedResultAsync(int pageNumber, int pageSize)
+		{
+			return _repo.GetPagedUserAsync(pageNumber, pageSize);
+		}
+
 	}
 }

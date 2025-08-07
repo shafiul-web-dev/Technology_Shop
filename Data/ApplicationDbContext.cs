@@ -16,6 +16,7 @@ namespace Technology_Shop.Data
 		public DbSet<Order> Orders { get; set; }
 		public DbSet<OrderItem> OrderItems { get; set; }
 		public DbSet<Payment> Payments { get; set; }
+		public DbSet<PasswordResetToken> PasswordResetTokens { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
@@ -52,6 +53,14 @@ namespace Technology_Shop.Data
 				.WithOne(oi => oi.Product)
 				.HasForeignKey(oi => oi.ProductID)
 				.OnDelete(DeleteBehavior.Cascade);
+
+			//PasswordResetToken
+			base.OnModelCreating(builder);
+
+			builder.Entity<PasswordResetToken>()
+				.HasIndex(p => p.Token)
+				.IsUnique();
+
 
 			//  Order
 			builder.Entity<Order>()

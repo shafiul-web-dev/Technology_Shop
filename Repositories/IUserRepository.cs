@@ -11,6 +11,9 @@ namespace Technology_Shop.Repositories
 		Task<User?> GettByIdAsync(int id);
 		Task<bool> UpdateProfileAsync(User user);
 
+		Task<PagedResult<User>> GetPagedUserAsync(int pageNumber, int pageSize);
+
+
 
 	}
 }
